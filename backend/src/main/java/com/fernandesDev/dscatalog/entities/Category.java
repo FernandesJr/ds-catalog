@@ -1,7 +1,11 @@
 package com.fernandesDev.dscatalog.entities;
 
+import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.CreatedDate;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.Objects;
 
 @Entity
@@ -12,6 +16,12 @@ public class Category implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+
+    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE") //Armazenar na db sem Time zone, permanece o meridiano de greenwich
+    private Instant createdAt;
+
+    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+    private Instant updateAt;
 
     public Category(){}
 
@@ -34,6 +44,26 @@ public class Category implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Instant getCreatedAt() {
+        return createdAt;
+    }
+
+    public Instant getUpdateAt() {
+        return updateAt;
+    }
+
+    //Dados de auditoria ao salvar o bd executa
+    @PrePersist
+    public void prePersist(){
+        this.createdAt = Instant.now();
+    }
+
+    //Dados de monitoria ao efetuar um update executa esse método, a JPA faz o gerenciamento
+    @PreUpdate
+    public void preUpdate(){
+        this.updateAt = Instant.now();
     }
 
     @Override
