@@ -1,6 +1,6 @@
 package com.fernandesDev.dscatalog.resources.exceptions;
 
-import com.fernandesDev.dscatalog.services.exceptions.EntityNotFoundException;
+import com.fernandesDev.dscatalog.services.exceptions.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -12,8 +12,8 @@ import java.time.Instant;
 @ControllerAdvice //Escuta as exceptions lançadas nos Controllers
 public class ResourceExceptionHandler {
 
-    @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<StandarError> notFoundExceptionResponseEntity(EntityNotFoundException e, HttpServletRequest request){
+    @ExceptionHandler(ResourceNotFoundException.class) //Capturando exception específica
+    public ResponseEntity<StandarError> notFoundExceptionResponseEntity(ResourceNotFoundException e, HttpServletRequest request){
         StandarError error = new StandarError();
         error.setTimestamp(Instant.now());
         error.setStatus(HttpStatus.NOT_FOUND.value());

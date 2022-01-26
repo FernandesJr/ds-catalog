@@ -3,10 +3,12 @@ package com.fernandesDev.dscatalog.services;
 import com.fernandesDev.dscatalog.entities.Category;
 import com.fernandesDev.dscatalog.repositories.CategoryRepository;
 import com.fernandesDev.dscatalog.dto.CategoryDTO;
-import com.fernandesDev.dscatalog.services.exceptions.EntityNotFoundException;
+import com.fernandesDev.dscatalog.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,12 +18,34 @@ public class CategoryService {
     @Autowired
     private CategoryRepository repository;
 
+    @Transactional(readOnly = true)
     public List<CategoryDTO> findAll(){
         return repository.findAll().stream().map(c -> new CategoryDTO(c)).collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     public CategoryDTO findById(Long id) {
-        Category category = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Entity not found"));
+        Category category = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
         return new CategoryDTO(category);
+    }
+
+    @Transactional
+    public CategoryDTO insert(CategoryDTO dto) {
+        Category category = new Category();
+        category.setName(dto.getName());
+        category = repository.save(category);
+        return new CategoryDTO(category);
+    }
+
+    @Transactional
+    public CategoryDTO update(Long id, CategoryDTO dto) {
+        try {
+            Category category = repository.getById(id); //Não acessa ao database, retorna apenas uma instância com id
+            category.setName(dto.getName());
+            category = repository.save(category); //Por causa do vinculo do getById mesmo sendo um id novo ele não salva na bd
+            return new CategoryDTO(category);
+        } catch (EntityNotFoundException e){
+            throw new ResourceNotFoundException("Entity not find by id "+id);
+        }
     }
 }
