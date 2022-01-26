@@ -3,8 +3,11 @@ package com.fernandesDev.dscatalog.services;
 import com.fernandesDev.dscatalog.entities.Category;
 import com.fernandesDev.dscatalog.repositories.CategoryRepository;
 import com.fernandesDev.dscatalog.dto.CategoryDTO;
+import com.fernandesDev.dscatalog.services.exceptions.DataBaseException;
 import com.fernandesDev.dscatalog.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,10 +45,22 @@ public class CategoryService {
         try {
             Category category = repository.getById(id); //Não acessa ao database, retorna apenas uma instância com id
             category.setName(dto.getName());
-            category = repository.save(category); //Por causa do vinculo do getById mesmo sendo um id novo ele não salva na bd
+            category = repository.save(category); //Por causa do vinculo do getById mesmo sendo um id inexistente ele não salva na bd
             return new CategoryDTO(category);
         } catch (EntityNotFoundException e){
             throw new ResourceNotFoundException("Entity not find by id "+id);
+        }
+    }
+
+    public void delete(Long id) {
+        try{
+            repository.deleteById(id);
+        } catch (EmptyResultDataAccessException e){
+            //Caso o id não tenha na bd
+            throw new ResourceNotFoundException("Entity not found by id "+id);
+        } catch (DataIntegrityViolationException d){
+            //Caso tenho algum produto vinculado a category não pode ser excluída
+            throw new DataBaseException("Integrity violation");
         }
     }
 }
