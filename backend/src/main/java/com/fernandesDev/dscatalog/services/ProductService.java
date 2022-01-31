@@ -1,7 +1,10 @@
 package com.fernandesDev.dscatalog.services;
 
+import com.fernandesDev.dscatalog.dto.CategoryDTO;
 import com.fernandesDev.dscatalog.dto.ProductDTO;
+import com.fernandesDev.dscatalog.entities.Category;
 import com.fernandesDev.dscatalog.entities.Product;
+import com.fernandesDev.dscatalog.repositories.CategoryRepository;
 import com.fernandesDev.dscatalog.repositories.ProductRepository;
 import com.fernandesDev.dscatalog.services.exceptions.DataBaseException;
 import com.fernandesDev.dscatalog.services.exceptions.ResourceNotFoundException;
@@ -21,6 +24,9 @@ public class ProductService {
     @Autowired
     private ProductRepository repository;
 
+    @Autowired
+    private CategoryRepository categoryRepository;
+
     @Transactional(readOnly = true)
     public Page<ProductDTO> findPaged(PageRequest pageRequest){
         return repository.findAll(pageRequest).map(c -> new ProductDTO(c));
@@ -35,16 +41,16 @@ public class ProductService {
     @Transactional
     public ProductDTO insert(ProductDTO dto) {
         Product product = new Product();
-        product.setName(dto.getName());
+        CopyDtoToEntity(dto, product);
         product = repository.save(product);
-        return new ProductDTO(product);
+        return new ProductDTO(product, product.getCategories());
     }
 
     @Transactional
     public ProductDTO update(Long id, ProductDTO dto) {
         try {
             Product product = repository.getById(id); //Não acessa ao database, retorna apenas uma instância com id
-            product.setName(dto.getName());
+            CopyDtoToEntity(dto, product);
             product = repository.save(product); //Por causa do vinculo do getById mesmo sendo um id inexistente ele não salva na bd
             return new ProductDTO(product);
         } catch (EntityNotFoundException e){
@@ -61,6 +67,19 @@ public class ProductService {
         } catch (DataIntegrityViolationException d){
             //Caso tenho algum produto vinculado a Product não pode ser excluída
             throw new DataBaseException("Integrity violation");
+        }
+    }
+
+    private void CopyDtoToEntity(ProductDTO dto, Product product) {
+        //Em estado de percistência
+        product.setName(dto.getName());
+        product.setDescription(dto.getDescription());
+        product.setImgUrl(dto.getImgUrl());
+        product.setPrice(dto.getPrice());
+        product.setDate(dto.getDate());
+        product.getCategories().clear();
+        for(CategoryDTO ctDto : dto.getCategories()){
+            product.getCategories().add(categoryRepository.getById(ctDto.getId())); //Uma referência ao bd *geyby*
         }
     }
 }

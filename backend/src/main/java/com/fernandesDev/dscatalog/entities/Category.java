@@ -1,7 +1,5 @@
 package com.fernandesDev.dscatalog.entities;
 
-import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.io.Serializable;
