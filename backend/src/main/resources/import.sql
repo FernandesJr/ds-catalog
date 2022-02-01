@@ -1,3 +1,16 @@
+INSERT INTO tb_client (name, cpf, income, birth_Date, children) VALUES ('Maria de Souza', '111.555.444-12', 1500, TIMESTAMP WITH TIME ZONE '1985-07-14T20:50:07Z', 5);
+INSERT INTO tb_client (name, cpf, income, birth_Date, children) VALUES ('Karla Tereza', '134.455.454-12', 1870.23, TIMESTAMP WITH TIME ZONE '1990-05-13T20:50:07Z', 1);
+INSERT INTO tb_client (name, cpf, income, birth_Date, children) VALUES ('João de Barros', '234.465.454-17', 2870.53, TIMESTAMP WITH TIME ZONE '1988-12-15T20:50:07Z', 2);
+INSERT INTO tb_client (name, cpf, income, birth_Date, children) VALUES ('Aquiles Nunes', '934.478.444-34', 3000, TIMESTAMP WITH TIME ZONE '1993-01-29T20:50:07Z', 4);
+INSERT INTO tb_client (name, cpf, income, birth_Date, children) VALUES ('Isabelly Silva', '174.458.456-74', 1700, TIMESTAMP WITH TIME ZONE '1999-03-09T20:50:07Z', 0);
+INSERT INTO tb_client (name, cpf, income, birth_Date, children) VALUES ('Carlos Bezerra', '132.458.456-74', 1730, TIMESTAMP WITH TIME ZONE '2001-08-11T20:50:07Z', 1);
+INSERT INTO tb_client (name, cpf, income, birth_Date, children) VALUES ('Maria Antonieta', '777.458.456-74', 2230.45, TIMESTAMP WITH TIME ZONE '2000-01-11T20:50:07Z', 1);
+INSERT INTO tb_client (name, cpf, income, birth_Date, children) VALUES ('Josefa Santana', '956.488.466-77', 1230.75, TIMESTAMP WITH TIME ZONE '1988-11-19T20:50:07Z', 3);
+INSERT INTO tb_client (name, cpf, income, birth_Date, children) VALUES ('kaio Neto', '436.488.466-34', 1110.75, TIMESTAMP WITH TIME ZONE '2002-03-19T20:50:07Z', 0);
+INSERT INTO tb_client (name, cpf, income, birth_Date, children) VALUES ('Sheila Nayara', '847.963.466-22', 3110.75, TIMESTAMP WITH TIME ZONE '1997-05-01T20:50:07Z', 0);
+
+
+
 INSERT INTO tb_category (name, created_At) VALUES ('Livros', NOW());
 INSERT INTO tb_category (name, created_At) VALUES ('Eletrônicos', NOW());
 INSERT INTO tb_category (name, created_At) VALUES ('Computadores', NOW());
