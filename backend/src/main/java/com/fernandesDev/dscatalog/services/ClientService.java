@@ -5,6 +5,7 @@ import com.fernandesDev.dscatalog.entities.Client;
 import com.fernandesDev.dscatalog.repositories.ClientRepository;
 import com.fernandesDev.dscatalog.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -54,7 +55,7 @@ public class ClientService {
     public void delete(Long id){
         try{
             clientRepository.deleteById(id);
-        } catch (EntityNotFoundException e){
+        } catch (EmptyResultDataAccessException e){
             throw new ResourceNotFoundException("Entity not found by id: "+id);
         }
     }
