@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,8 +21,8 @@ public class ClientService {
     private ClientRepository clientRepository;
 
     @Transactional(readOnly = true)
-    public Page<ClientDTO> findPaged(PageRequest pageRequest){
-        return clientRepository.findAll(pageRequest).map(c -> new ClientDTO(c));
+    public Page<ClientDTO> findPaged(Pageable pageable){
+        return clientRepository.findAll(pageable).map(c -> new ClientDTO(c));
     }
 
     @Transactional(readOnly = true)
