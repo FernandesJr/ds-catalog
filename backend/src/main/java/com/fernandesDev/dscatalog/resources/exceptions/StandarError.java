@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.Instant;
 
 public class StandarError implements Serializable {
+	private static final long serialVersionUID = 1L;
 
     private Instant timestamp;
     private Integer status;
