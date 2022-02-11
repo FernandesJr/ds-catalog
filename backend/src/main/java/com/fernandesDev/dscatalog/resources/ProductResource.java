@@ -13,7 +13,7 @@ import java.net.URI;
 
 @RequestMapping(value = "/products")
 @RestController
-public class ProductResourse {
+public class ProductResource {
 
     @Autowired
     private ProductService service;
