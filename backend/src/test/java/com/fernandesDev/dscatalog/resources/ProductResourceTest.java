@@ -66,6 +66,8 @@ public class ProductResourceTest {
         doNothing().when(service).delete(existingId); //Lembrando que quando método é void inverte a ação, 'não faça nada quando'
         doThrow(ResourceNotFoundException.class).when(service).delete(nonExistingId);
         doThrow(DataBaseException.class).when(service).delete(dependentId);
+
+        when(service.insert(any())).thenReturn(productDTO);
     }
 
     @Test
@@ -92,7 +94,7 @@ public class ProductResourceTest {
     }
 
     @Test
-    public void updateShouldReturnProductDTOWhenIdExist() throws Exception {
+    public void updateShouldReturnProductDTOWhenIdExists() throws Exception {
 
         String jsonBody = objectMapper.writeValueAsString(productDTO); //Convertendo um objeto JAVA em JSON
 
@@ -109,7 +111,7 @@ public class ProductResourceTest {
     }
 
     @Test
-    public void updateShouldReturnNotFOUNDWhenIdDoesNotExist() throws Exception {
+    public void updateShouldReturnNotFOUNDWhenIdDoesNotExists() throws Exception {
 
         String jsonBody = objectMapper.writeValueAsString(productDTO); //Convertendo um objeto JAVA em JSON
 
@@ -118,6 +120,48 @@ public class ProductResourceTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)); //Para garantir que está retornando um JSON);
         result.andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
+
+    @Test
+    public void insertShouldReturnCreatedAndProductDTO() throws Exception{
+        String jsonBody = objectMapper.writeValueAsString(productDTO); //Convertendo um objeto JAVA em JSON
+
+        ResultActions result = mockMvc.perform(MockMvcRequestBuilders.post("/products")
+                .content(jsonBody)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
+
+        result.andExpect(MockMvcResultMatchers.status().isCreated());
+        result.andExpect(jsonPath("$.id").exists());
+        result.andExpect(jsonPath("$.name").exists());
+        result.andExpect(jsonPath("$.description").exists());
+    }
+
+    @Test
+    public void deleteShouldNoContentWhenIdExists()throws Exception{
+
+        ResultActions result = mockMvc.perform(MockMvcRequestBuilders.delete("/products/{id}", existingId)
+                .accept(MediaType.APPLICATION_JSON));
+
+        result.andExpect(MockMvcResultMatchers.status().isNoContent());
+    }
+
+    @Test
+    public void deleteShouldNotFoundWhenIdDoesNotExists()throws Exception{
+
+        ResultActions result = mockMvc.perform(MockMvcRequestBuilders.delete("/products/{id}", nonExistingId)
+                .accept(MediaType.APPLICATION_JSON));
+
+        result.andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
+
+    @Test
+    public void deleteShouldBadRequestWhenDependentId()throws Exception{
+
+        ResultActions result = mockMvc.perform(MockMvcRequestBuilders.delete("/products/{id}", dependentId)
+                .accept(MediaType.APPLICATION_JSON));
+
+        result.andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
 }
