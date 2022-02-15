@@ -111,7 +111,7 @@ public class ProductResourceTest {
     }
 
     @Test
-    public void updateShouldReturnNotFOUNDWhenIdDoesNotExists() throws Exception {
+    public void updateShouldReturnNotFOUNDWhenIdDoesNotExist() throws Exception {
 
         String jsonBody = objectMapper.writeValueAsString(productDTO); //Convertendo um objeto JAVA em JSON
 
@@ -147,7 +147,7 @@ public class ProductResourceTest {
     }
 
     @Test
-    public void deleteShouldNotFoundWhenIdDoesNotExists()throws Exception{
+    public void deleteShouldNotFoundWhenIdDoesNotExist()throws Exception{
 
         ResultActions result = mockMvc.perform(MockMvcRequestBuilders.delete("/products/{id}", nonExistingId)
                 .accept(MediaType.APPLICATION_JSON));
