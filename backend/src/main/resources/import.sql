@@ -1,3 +1,14 @@
+INSERT INTO tb_user (first_name, last_name, email, password) VALUES ('Alex', 'Brown', 'alex@gmail.com', '$2a$10$eACCYoNOHEqXve8aIWT8Nu3PkMXWBaOxJ9aORUYzfMQCbVBIhZ8tG');
+INSERT INTO tb_user (first_name, last_name, email, password) VALUES ('Maria', 'Green', 'maria@gmail.com', '$2a$10$eACCYoNOHEqXve8aIWT8Nu3PkMXWBaOxJ9aORUYzfMQCbVBIhZ8tG');
+
+INSERT INTO tb_role (authority) VALUES ('ROLE_OPERATOR');
+INSERT INTO tb_role (authority) VALUES ('ROLE_ADMIN');
+
+INSERT INTO tb_user_role (user_id, role_id) VALUES (1, 1);
+INSERT INTO tb_user_role (user_id, role_id) VALUES (2, 1);
+INSERT INTO tb_user_role (user_id, role_id) VALUES (2, 2);
+
+
 INSERT INTO tb_client (name, cpf, income, birth_Date, children) VALUES ('Katarina de Souza', '111.555.444-12', 1500, TIMESTAMP WITH TIME ZONE '1985-07-14T20:50:07Z', 5);
 INSERT INTO tb_client (name, cpf, income, birth_Date, children) VALUES ('Karla Tereza', '134.455.454-12', 1870.23, TIMESTAMP WITH TIME ZONE '1990-05-13T20:50:07Z', 1);
 INSERT INTO tb_client (name, cpf, income, birth_Date, children) VALUES ('João de Barros', '234.465.454-17', 2870.53, TIMESTAMP WITH TIME ZONE '1988-12-15T20:50:07Z', 2);
