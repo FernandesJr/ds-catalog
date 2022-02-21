@@ -3,6 +3,7 @@ package com.fernandesDev.dscatalog.dto;
 import com.fernandesDev.dscatalog.entities.User;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 public class UserDTO implements Serializable {
@@ -11,7 +12,7 @@ public class UserDTO implements Serializable {
     private String firstName;
     private String lastName;
     private String email;
-    private Set<RoleDTO> roles;
+    private Set<RoleDTO> roles = new HashSet<>();
 
     public UserDTO(){}
 
