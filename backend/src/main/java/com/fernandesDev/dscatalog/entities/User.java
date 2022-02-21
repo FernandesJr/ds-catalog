@@ -17,7 +17,7 @@ public class User implements Serializable {
     private String email;
     private String password;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER) //Ao buscar um User no banco automaticamente já busca também os roles dele
     @JoinTable(
             name = "tb_user_role",
             joinColumns = @JoinColumn(name = "user_id"),
