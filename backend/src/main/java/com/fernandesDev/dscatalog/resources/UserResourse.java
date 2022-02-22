@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 
 @RequestMapping(value = "/users")
@@ -32,7 +33,7 @@ public class UserResourse {
     }
 
     @PostMapping
-    public ResponseEntity<UserDTO> insert(@RequestBody UserInsertDTO dto){
+    public ResponseEntity<UserDTO> insert(@Valid @RequestBody UserInsertDTO dto){
         UserDTO newDto = service.insert(dto);
         //Quando se cria um novo recurso deve-se devolver um status 201
         //E no head da response por convenção declara o location do recurso criado
@@ -42,7 +43,7 @@ public class UserResourse {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserDTO> update(@PathVariable Long id, @RequestBody UserInsertDTO dto){
+    public ResponseEntity<UserDTO> update(@Valid @PathVariable Long id, @RequestBody UserInsertDTO dto){
         UserDTO newDto = service.update(id, dto);
         return ResponseEntity.ok().body(newDto);
     }
