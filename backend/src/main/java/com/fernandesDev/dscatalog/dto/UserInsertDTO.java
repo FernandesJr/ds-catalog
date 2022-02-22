@@ -1,5 +1,8 @@
 package com.fernandesDev.dscatalog.dto;
 
+import com.fernandesDev.dscatalog.services.validation.UserInsertValid;
+
+@UserInsertValid //Anotação criada para validar se o email já se encontra cadastrado no bando de dados
 public class UserInsertDTO extends UserDTO{
 
     private String password;
