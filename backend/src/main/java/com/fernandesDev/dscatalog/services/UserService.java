@@ -3,6 +3,7 @@ package com.fernandesDev.dscatalog.services;
 import com.fernandesDev.dscatalog.dto.RoleDTO;
 import com.fernandesDev.dscatalog.dto.UserDTO;
 import com.fernandesDev.dscatalog.dto.UserInsertDTO;
+import com.fernandesDev.dscatalog.dto.UserUpdateDTO;
 import com.fernandesDev.dscatalog.entities.User;
 import com.fernandesDev.dscatalog.repositories.RoleRepository;
 import com.fernandesDev.dscatalog.repositories.UserRepository;
@@ -52,7 +53,7 @@ public class UserService {
     }
 
     @Transactional
-    public UserDTO update(Long id, UserInsertDTO dto) {
+    public UserDTO update(Long id, UserUpdateDTO dto) {
         try {
             User user = repository.getById(id); //Não acessa ao database, retorna apenas uma instância com id
             CopyDtoToEntity(dto, user);
