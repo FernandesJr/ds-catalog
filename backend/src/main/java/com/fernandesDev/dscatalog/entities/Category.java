@@ -22,7 +22,7 @@ public class Category implements Serializable {
     private Instant createdAt;
 
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
-    private Instant updateAt;
+    private Instant updatedAt;
 
     @ManyToMany(mappedBy = "categories")
     private Set<Product> products = new HashSet<>();
@@ -55,7 +55,7 @@ public class Category implements Serializable {
     }
 
     public Instant getUpdateAt() {
-        return updateAt;
+        return updatedAt;
     }
 
     //Dados de auditoria ao salvar o bd executa
@@ -67,7 +67,7 @@ public class Category implements Serializable {
     //Dados de monitoria ao efetuar um update executa esse método, a JPA faz o gerenciamento
     @PreUpdate
     public void preUpdate(){
-        this.updateAt = Instant.now();
+        this.updatedAt = Instant.now();
     }
 
     @Override
