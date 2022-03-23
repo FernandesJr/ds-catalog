@@ -54,7 +54,7 @@ public class ProductResourceTest {
         productDTO = Factory.getProductDTO();
         page = new PageImpl<>(List.of(productDTO));
 
-        when(service.findPaged(any())).thenReturn(page);
+        when(service.findPaged(any(), null)).thenReturn(page);
         when(service.findById(existingId)).thenReturn(productDTO);
         when(service.findById(nonExistingId)).thenThrow(ResourceNotFoundException.class); //Porém em ResourceException é tratado para retorna um NotFound
 

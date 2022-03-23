@@ -2,6 +2,7 @@ package com.fernandesDev.dscatalog.services;
 
 import com.fernandesDev.dscatalog.dto.CategoryDTO;
 import com.fernandesDev.dscatalog.dto.ProductDTO;
+import com.fernandesDev.dscatalog.entities.Category;
 import com.fernandesDev.dscatalog.entities.Product;
 import com.fernandesDev.dscatalog.repositories.CategoryRepository;
 import com.fernandesDev.dscatalog.repositories.ProductRepository;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
@@ -27,8 +29,9 @@ public class ProductService {
     private CategoryRepository categoryRepository;
 
     @Transactional(readOnly = true)
-    public Page<ProductDTO> findPaged(Pageable pageable){
-        return repository.findAll(pageable).map(c -> new ProductDTO(c));
+    public Page<ProductDTO> findPaged(Pageable pageable, Long idCat){
+        Category category = (idCat == 0) ? null : categoryRepository.getById(idCat); //Se vier 0 retornar todos independente da categoria
+        return repository.findByCategory(category, pageable).map(p -> new ProductDTO(p));
     }
 
     @Transactional(readOnly = true)
