@@ -21,8 +21,9 @@ public class ProductResource {
 
     @GetMapping
     public ResponseEntity<Page<ProductDTO>> findpaged(Pageable pageable,
-                                                      @RequestParam(value = "idcat", defaultValue = "0") Long idCat){
-        Page<ProductDTO> list = service.findPaged(pageable, idCat);
+                                                      @RequestParam(value = "idcat", defaultValue = "0") Long idCat,
+                                                      @RequestParam(value = "name", defaultValue = "") String name){
+        Page<ProductDTO> list = service.findPaged(pageable, idCat, name.trim()); //O trim retira os espaços em branco do início e fim
         return ResponseEntity.ok().body(list);
     }
 

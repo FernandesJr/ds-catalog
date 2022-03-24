@@ -29,9 +29,9 @@ public class ProductService {
     private CategoryRepository categoryRepository;
 
     @Transactional(readOnly = true)
-    public Page<ProductDTO> findPaged(Pageable pageable, Long idCat){
+    public Page<ProductDTO> findPaged(Pageable pageable, Long idCat, String name){
         Category category = (idCat == 0) ? null : categoryRepository.getById(idCat); //Se vier 0 retornar todos independente da categoria
-        return repository.findByCategory(category, pageable).map(p -> new ProductDTO(p));
+        return repository.findByCategoryOrName(category, pageable, name).map(p -> new ProductDTO(p, p.getCategories()));
     }
 
     @Transactional(readOnly = true)

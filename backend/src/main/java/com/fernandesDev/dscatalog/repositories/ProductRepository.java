@@ -9,14 +9,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
     //Tem que apelidar o inner join e o IN verifica se a categoria contém na lista do relacionamento
-    @Query("SELECT obj FROM Product obj " +
+    @Query("SELECT DISTINCT obj FROM Product obj " +
             "INNER JOIN obj.categories cats " +
-            "WHERE :category IN cats")
-    Page<Product> findByCategory(Category category, Pageable pageable);
+            "WHERE (:category IS NULL OR :category IN cats) " +
+            "AND LOWER(obj.name) LIKE LOWER(CONCAT('%',:name,'%'))") //Se vier null a consulta já não verifica o IN Desta forma retorna todos os produtos
+    Page<Product> findByCategoryOrName(Category category, Pageable pageable, String name);
 }
