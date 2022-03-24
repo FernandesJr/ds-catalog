@@ -1,5 +1,6 @@
 package com.fernandesDev.dscatalog.services;
 
+import ch.qos.logback.core.read.ListAppender;
 import com.fernandesDev.dscatalog.dto.CategoryDTO;
 import com.fernandesDev.dscatalog.dto.ProductDTO;
 import com.fernandesDev.dscatalog.entities.Category;
@@ -17,7 +18,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.stream.Collectors;
+import java.util.Arrays;
+import java.util.List;
 
 @Service
 public class ProductService {
@@ -30,8 +32,10 @@ public class ProductService {
 
     @Transactional(readOnly = true)
     public Page<ProductDTO> findPaged(Pageable pageable, Long idCat, String name){
-        Category category = (idCat == 0) ? null : categoryRepository.getById(idCat); //Se vier 0 retornar todos independente da categoria
-        return repository.findByCategoryOrName(category, pageable, name).map(p -> new ProductDTO(p, p.getCategories()));
+        List<Category> categories = (idCat == 0) ? null : Arrays.asList(categoryRepository.getById(idCat)) ; //Se vier 0 retornar todos independente da categoria
+        Page<Product> page = repository.findByCategoryOrName(categories, pageable, name);
+        repository.findProductWithCategory(page.getContent()); //Resolvendo o problema N+1 consultas.. Armazenando as categorias em memória
+        return page.map(p -> new ProductDTO(p, p.getCategories())); //O JPA somente busca as categorias nesse momento
     }
 
     @Transactional(readOnly = true)
