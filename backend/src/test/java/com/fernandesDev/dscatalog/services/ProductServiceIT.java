@@ -52,39 +52,39 @@ public class ProductServiceIT {
 
     @Test
     public void findAllPagedShouldReturnPageZeroWithTenProducts(){
-        /*
+
         PageRequest request = PageRequest.of(0, 10);
 
-        Page<ProductDTO> page = service.findPaged(request);
+        Page<ProductDTO> page = service.findPaged(request,0L, "");
 
         Assertions.assertFalse(page.isEmpty());
         Assertions.assertEquals(10, page.getSize());
         Assertions.assertEquals(25, page.getTotalElements());
-        Assertions.assertEquals(0, page.getNumber());*/
+        Assertions.assertEquals(0, page.getNumber());
 
     }
 
     @Test
     public void findAllPagedShouldReturnPageEmpty(){
-        /*
+
         PageRequest request = PageRequest.of(50, 10);
 
-        Page<ProductDTO> page = service.findPaged(request);
+        Page<ProductDTO> page = service.findPaged(request,0L, "");
 
         Assertions.assertTrue(page.isEmpty());
-        */
+
     }
 
     @Test
     public void findAllPagedShouldReturnSortesPageSortByName(){
-        /*
+
         PageRequest request = PageRequest.of(0, 10, Sort.by("name"));
 
-        Page<ProductDTO> page = service.findPaged(request);
+        Page<ProductDTO> page = service.findPaged(request,0L, "");
 
         Assertions.assertEquals("Macbook Pro", page.getContent().get(0).getName());
         Assertions.assertEquals("PC Gamer", page.getContent().get(1).getName());
         Assertions.assertEquals("PC Gamer Alfa", page.getContent().get(2).getName());
-        */
+
     }
 }

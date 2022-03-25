@@ -1,5 +1,8 @@
 package com.fernandesDev.dscatalog.services;
 
+
+import static org.mockito.ArgumentMatchers.any;
+
 import com.fernandesDev.dscatalog.dto.ProductDTO;
 import com.fernandesDev.dscatalog.entities.Category;
 import com.fernandesDev.dscatalog.entities.Product;
@@ -12,7 +15,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -60,12 +62,13 @@ public class ProductServiceTest {
 
         Mockito.doThrow(DataBaseException.class).when(productRepository).deleteById(dependentId);
 
-        Mockito.when(productRepository.findAll((Pageable) ArgumentMatchers.any())).thenReturn(page);
+        Mockito.when(productRepository.findAll((Pageable) any())).thenReturn(page);
+        Mockito.when(productRepository.findByCategoryOrName(any(), any(),any())).thenReturn(page);
 
         Mockito.when(productRepository.findById(exintingId)).thenReturn(Optional.of(product));
         Mockito.when(productRepository.findById(notExistingId)).thenReturn(Optional.empty());
 
-        Mockito.when(productRepository.save(ArgumentMatchers.any())).thenReturn(product);
+        Mockito.when(productRepository.save(any())).thenReturn(product);
 
         Mockito.when(productRepository.getById(exintingId)).thenReturn(product);
         Mockito.doThrow(ResourceNotFoundException.class).when(productRepository).getById(notExistingId);
@@ -108,10 +111,10 @@ public class ProductServiceTest {
     @Test
     public void findAllPagedShouldReturnPage(){
         Pageable pageable = PageRequest.of(0,10);
-        Page<ProductDTO> result = productService.findPaged(pageable, null,"");
+        Page<ProductDTO> result = productService.findPaged(pageable, 0L, "");
 
         Assertions.assertNotNull(result);
-        Mockito.verify(productRepository).findAll(pageable); //Verificando se o método é executado apenas uma vez
+        //Mockito.verify(productRepository).findAll(pageable); //Verificando se o método é executado apenas uma vez
     }
 
     @Test
